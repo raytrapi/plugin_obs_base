@@ -18,12 +18,12 @@
 /*template<typename T, void addref(T), void release(T)> class OBSRef;
 
 using OBSSource = OBSRef<obs_source_t *, obs_source_addref, obs_source_release>;/**/
-static const char *cogerNombre(void *data){return "Mi Bocina";}
+static const char *cogerNombre(void *data){return "Nombre mi yo";}
 static FILE *fp=NULL;
 static OBSSource escena=NULL;
 static void abrirLog(){
 	if(fp==NULL){
-		fp = fopen ("H:\\Desarrollo\\obs\\dep\\rundir\\Debug\\bin\\64bit\\log.txt","a+");
+		fp = fopen ("log.txt","a+");
 	}
 }
 static void cerrarLog(){
@@ -94,7 +94,7 @@ static void activarFuente(obs_source_t *parent,
 		//hacerLog("Hijo");
 		hacerLog(("--"+std::string(obs_source_get_name(child))+"-- = --"+parametros["nombre"]+"--").c_str());
 		if(strcmp(obs_source_get_name(child),parametros["nombre"].c_str())==0){
-			hacerLog("Encontré");
+			hacerLog("EncontrÃ©");
 			obs_source_set_enabled(child,strcmp(parametros["activar"].c_str(),"true")==0?true:false);//!obs_source_enabled(child)
 			//child->hide();
 		}
@@ -105,10 +105,10 @@ static bool pararPipe=true;
 DWORD WINAPI procesarHilo(LPVOID lpvParam);
 DWORD WINAPI lanzarPIPE(LPVOID parametro){
 	static HANDLE pipe = INVALID_HANDLE_VALUE, hiloPipe=NULL;
-	//Esto solo funciona en Windows, Para otro sistema operativo habría que buscar una alternativa similar
+	//Esto solo funciona en Windows, Para otro sistema operativo habrÃ­a que buscar una alternativa similar
 	while(!pararPipe){
 
-		pipe = CreateNamedPipe(TEXT("\\\\.\\pipe\\control_directo"),
+		pipe = CreateNamedPipe(TEXT("\\\\.\\pipe\\control_directo_temp"),
 					  PIPE_ACCESS_DUPLEX,       // read/write access
 					  PIPE_TYPE_MESSAGE |       // message type pipe
 					  PIPE_READMODE_MESSAGE ,  // message-read mode
@@ -229,9 +229,9 @@ DWORD WINAPI procesarHilo(LPVOID lpvParam){
 }
 
 void procesarComando(char * comando) {
-	//Recibimos siempre dos letras con la acción a realizar y una segunda parte con datos.
+	//Recibimos siempre dos letras con la acciÃ³n a realizar y una segunda parte con datos.
 	hacerLog("empezamos el procesamiento del comando");
-	int longitudComando=strlen(comando);
+	int longitudComando=(int)strlen(comando);
 	hacerLog(comando);
 
 	if(longitudComando>=4 && comando[0]=='C' && comando[1]=='E'){
@@ -356,7 +356,7 @@ static void renderizado(void *data, gs_effect_t *effect){}
 }*/
 struct obs_source_info bocinaSource={};
 void registrarBocina(){
-	bocinaSource.id= "mi_bocina";
+	bocinaSource.id= "mi_yo";
 	bocinaSource.type= OBS_SOURCE_TYPE_INPUT;
 	bocinaSource.output_flags= OBS_SOURCE_AUDIO;
 	bocinaSource.get_name= cogerNombre;
